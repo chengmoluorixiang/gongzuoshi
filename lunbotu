@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>无缝滚动</title>
+<style>
+	*{
+		margin:0px; padding:0px;
+	}
+	#wai{
+		width:100%;
+		height:500px;
+		
+		position:relative;	
+	}
+	#nei{
+		width:700px;;
+		height:240px;
+		
+		position:relative;
+		left:50%;
+		margin-left:-350px;
+		top:50%;
+		margin-top:-120px;
+		overflow:hidden;
+	}
+	ul{
+		position:absolute;
+		height:240px;
+		
+		left:0px;
+		top:0px;
+	}
+	ul li{
+		list-style:none	
+	}
+	ul li a{
+		display:block;	
+		float:left;
+		margin:20px;	
+		width:200px;
+		height:200px;	
+	}
+	ul li a img{
+		width:200px;	
+		height:200px;
+	}
+	#zuo{
+		width:50px;
+		height:50px;
+		background-color:#0FF;
+		position:absolute;
+		left:100px;
+		top:300px;	
+		border-radius:25px;
+		text-align:center;
+		line-height:50px;
+	}
+	#you{
+		width:50px;
+		height:50px;
+		background-color:#0FF;
+		position:absolute;
+		right:100px;
+		top:300px;	
+		border-radius:25px;
+		text-align:center;
+		line-height:50px;
+	}
+</style>
+<script>
+	window.onload=function(){
+		var wai = document.getElementById('wai');
+		var uls = document.getElementsByTagName('ul')[0];
+		var lis = document.getElementsByTagName('li');
+		var zuo = document.getElementById('zuo');
+		var you = document.getElementById('you');
+		var sudu= -5;	//正往右移动负往左移动
+		var times=null; //定时器
+		uls.innerHTML+=uls.innerHTML;//复制ul并赋值给ul自己
+		uls.style.width=lis[0].offsetWidth*lis.length+'px';
+		times=setInterval(function (){
+		uls.style.left=uls.offsetLeft+sudu+'px';  //offsetLeft 获取的是相对于父对象的左边距      +sudu 让图片动起来
+			if(uls.offsetLeft<-uls.offsetWidth/2){ 	
+					uls.style.left='0px';//当ul向左移动超过ul宽度的50% 重新归零
+			}else if(uls.offsetLeft >= 0){//向右移动时当ul左侧距离父标签大于等于0时重新归为-50%
+					uls.style.left= -uls.offsetWidth/2+'px';
+			}
+			},30);
+		zuo.onclick = function(){ //当点击向左时 图片向左移动
+			sudu = -5;
+		}
+		you.onclick = function(){ //当点击向右时 图片向右移动
+			sudu = 5;
+		}
+		uls.onmouseover=function(){//ul获取焦点时停止移动
+			clearInterval(times);//关闭定时器
+		}
+		uls.onmouseout=function(){//ul失去焦点时重启定时器
+			times=setInterval(function (){
+			uls.style.left=uls.offsetLeft+sudu+'px';  //offsetLeft 获取的是相对于父对象的左边距      +sudu 让图片动起来
+			if(uls.offsetLeft<-uls.offsetWidth/2){
+					uls.style.left='0px';
+			}else if(uls.offsetLeft >= 0){
+					uls.style.left= -uls.offsetWidth/2+'px';
+			}
+			},30);
+		}
+		}
+		
+</script>
+</head>
+
+<body>
+<div id="wai">
+<div id="zuo">向左</div>
+<div id="you">向右</div>
+<div id="nei">
+	<ul>
+    	<li><a href="#"><img src="1.jpg"/></a></li>
+    	<li><a href="#"><img src="2.jpg"/></a></li>
+        <li><a href="#"><img src="3.jpg"/></a></li>
+        <li><a href="#"><img src="4.jpg"/></a></li>
+
+    </ul>
+</div>
+</div>
+</body>
+</html>
